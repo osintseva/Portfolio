@@ -2,30 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Gallery</title>
   <style>
+    /* Reset & Base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
-      padding: 20px; 
-      background: #fff; 
-      font-family: Arial, sans-serif; 
+      padding: 20px;
+      background: #fff;
+      font-family: Arial, sans-serif;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
+
+    /* Gallery Grid */
     .gallery {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 80px;
-      max-width: 1500px;     /* ← fixed canvas width */
+      gap: 40px;
+      max-width: 1500px;
       width: 100%;
-      height: 100%;
-      margin: 0;             /* ← remove auto margin since body handles centering */
-      position: relative;
+      margin: 0 auto;
     }
+
+    /* Gallery Item */
     .item {
       position: relative;
       width: 100%;
@@ -35,6 +37,8 @@
       cursor: pointer;
       transition: transform 0.3s ease;
       text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .item img {
       position: absolute;
@@ -45,6 +49,8 @@
       transition: transform 0.3s ease;
     }
     .item:hover img { transform: scale(1.05); }
+
+    /* Hover Overlay */
     .overlay {
       position: absolute;
       top: 0; left: 0;
@@ -55,6 +61,7 @@
       background: rgba(0,0,0,0.5);
       opacity: 0;
       transition: opacity 0.3s ease;
+      border-radius: 8px;
     }
     .item:hover .overlay { opacity: 1; }
     .overlay span {
@@ -64,52 +71,31 @@
       text-align: center;
       padding: 0 8px;
     }
-    .header {
-      position: absolute;
-      top: -50px;
-      right: 0;
-      text-align: right;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-weight: 300;
-      color: #333;
-      z-index: 1000;
-    }
-    .header h1 {
-      font-size: 1.4rem;
-      font-weight: 400;
-      margin: 0;
-      letter-spacing: 0.5px;
-    }
-    .header h2 {
-      font-size: 0.8rem;
-      font-weight: 300;
-      margin: 3px 0 0 0;
-      color: #666;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+
+    /* Responsive: switch to 2 columns */
+    @media (max-width: 768px) {
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Iuliia Osintseva</h1>
-    <h2>Portfolio</h2>
-  </div>
+  <div class="gallery" id="gallery"></div>
+
   <script>
-    // === EDIT THIS ARRAY ===
     const PROJECTS = [
       { name: "Circulations DigiWo",    imageUrl: "images/img_1.jpg", linkUrl: "https://www.youtube.com/watch?v=jO5kzjUUG08&t=1h2m17s" },
-      { name: "Parametric Urbanism Ethiopia",        imageUrl: "images/img_2.jpg", linkUrl: "https://vimeo.com/manage/videos/210054230" },
-      { name: "ML: Apartment Price Prediction",      imageUrl: "images/img_3.jpg", linkUrl: "https://github.com/osintseva/ApartmentPrices" },
-      { name: "Scripts for Residential Generation",     imageUrl: "images/img_4.jpg", linkUrl: "https://www.youtube.com/watch?v=byOanT-oF54&list=PLKI3bXqM2ppkGsa7p1iU2w6NVNtMTzzi9&index=2&t=674s" },
-      { name: "Parametric Masterplan Tanjong Pagar",        imageUrl: "images/img_5.jpg", linkUrl: "https://vimeo.com/manage/videos/240964157" },
-      { name: "Volumes Generation DigiWo",   imageUrl: "images/img_6.jpg", linkUrl: "https://toolbox.decodingspaces.net/digiwo/" },
-      { name: "Co-Pilot for Residential Design",     imageUrl: "images/img_7.jpg", linkUrl: "https://www.linkedin.com/posts/michalukropec_innovation-startup-digitaltwin-ugcPost-7309131866920411137-swvt/" },
-      { name: "Grasshopper Primer",imageUrl: "images/img_8.jpg", linkUrl: "https://www.notion.so/GH-Rhino-Fast-Track-70e6b613f4e04e90af11aa2e6aae1bd4" }
+      { name: "Parametric Urbanism Ethiopia", imageUrl: "images/img_2.jpg", linkUrl: "https://vimeo.com/manage/videos/210054230" },
+      { name: "ML: Apartment Price Prediction", imageUrl: "images/img_3.jpg", linkUrl: "https://github.com/osintseva/ApartmentPrices" },
+      { name: "Scripts for Residential Generation", imageUrl: "images/img_4.jpg", linkUrl: "https://www.youtube.com/watch?v=byOanT-oF54&list=PLKI3bXqM2ppkGsa7p1iU2w6NVNtMTzzi9&index=2&t=674s" },
+      { name: "Parametric Masterplan Tanjong Pagar", imageUrl: "images/img_5.jpg", linkUrl: "https://vimeo.com/manage/videos/240964157" },
+      { name: "Volumes Generation DigiWo", imageUrl: "images/img_6.jpg", linkUrl: "https://toolbox.decodingspaces.net/digiwo/" },
+      { name: "Co-Pilot for Residential Design", imageUrl: "images/img_7.jpg", linkUrl: "https://www.linkedin.com/posts/michalukropec_innovation-startup-digitaltwin-ugcPost-7309131866920411137-swvt/" },
+      { name: "Grasshopper Primer", imageUrl: "images/img_8.jpg", linkUrl: "https://www.notion.so/GH-Rhino-Fast-Track-70e6b613f4e04e90af11aa2e6aae1bd4" }
     ];
-  </script>
-  <div class="gallery" id="gallery"></div>
-  <script>
+
     const gallery = document.getElementById("gallery");
     PROJECTS.forEach(p => {
       const a = document.createElement("a");
