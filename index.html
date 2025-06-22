@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Project Gallery</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { padding: 20px; background: #fff; font-family: Arial, sans-serif; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .item {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #eee;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      text-decoration: none;
+    }
+    .item img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .item:hover img { transform: scale(1.05); }
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .item:hover .overlay { opacity: 1; }
+    .overlay span {
+      font-weight: bold;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      padding: 0 8px;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // === EDIT THIS ARRAY ===
+    const PROJECTS = [
+      { name: "Mountainscape",    imageUrl: "images/img_1.jpg", linkUrl: "https://example.com/mountainscape" },
+      { name: "City View",        imageUrl: "images/img_2.jpg", linkUrl: "https://example.com/cityview" },
+      { name: "Color Burst",      imageUrl: "images/img_3.jpg", linkUrl: "https://example.com/colorburst" },
+      { name: "Urban Blocks",     imageUrl: "images/img_4.jpg", linkUrl: "https://example.com/urbanblocks" },
+      { name: "Riverside",        imageUrl: "images/img_5.jpg", linkUrl: "https://example.com/riverside" },
+      { name: "Concept Models",   imageUrl: "images/img_6.jpg", linkUrl: "https://example.com/conceptmodels" },
+      { name: "Nested Grids",     imageUrl: "images/img_7.jpg", linkUrl: "https://example.com/nestedgrids" },
+      { name: "Sunlight Analysis",imageUrl: "images/img_8.jpg", linkUrl: "https://example.com/sunlightanalysis" }
+    ];
+  </script>
+  <div class="gallery" id="gallery"></div>
+  <script>
+    const gallery = document.getElementById("gallery");
+    PROJECTS.forEach(p => {
+      const a = document.createElement("a");
+      a.href = p.linkUrl;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.className = "item";
+      a.innerHTML = `
+        <img src="${p.imageUrl}" alt="${p.name}">
+        <div class="overlay"><span>${p.name}</span></div>
+      `;
+      gallery.appendChild(a);
+    });
+  </script>
+</body>
+</html>
